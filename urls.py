@@ -23,6 +23,11 @@ def get_urls_from_archive(domain):
 
     return urls
 
+def save_urls_to_file(urls, file_path):
+    with open(file_path, 'w') as f:
+        for url in urls:
+            f.write(url + '\n')
+
 def main():
     # Take user input for domain name
     domain = input("Enter the domain name: ")
@@ -30,10 +35,12 @@ def main():
     # Get URLs from web.archive.org
     urls = get_urls_from_archive(domain)
 
-    # Print the retrieved URLs
-    print("Retrieved URLs:")
-    for url in urls:
-        print(url)
+    # Ask user for the path to save the output text file
+    file_path = input("Enter the path to save the output text file: ")
+
+    # Save URLs to the output text file
+    save_urls_to_file(urls, file_path)
+    print("URLs saved to", file_path)
 
 if __name__ == "__main__":
     main()
