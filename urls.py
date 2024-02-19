@@ -1,6 +1,8 @@
+import re
+
 import requests
 from bs4 import BeautifulSoup
-import re
+
 
 def get_urls_from_archive(domain):
     # Construct the URL for the web.archive.org
@@ -13,20 +15,26 @@ def get_urls_from_archive(domain):
         return []
 
     # Parse HTML content
-    soup = BeautifulSoup(response.content, 'html.parser')
+    soup = BeautifulSoup(response.content, "html.parser")
 
     # Find all <a> tags with href attribute
-    links = soup.find_all('a', href=True)
+    links = soup.find_all("a", href=True)
 
     # Extract URLs from href attributes using regular expressions
-    urls = [link['href'] for link in links if re.match(r'https://web.archive.org/web/\d+/', link['href'])]
+    urls = [
+        link["href"]
+        for link in links
+        if re.match(r"https://web.archive.org/web/\d+/", link["href"])
+    ]
 
     return urls
 
+
 def save_urls_to_file(urls, file_path):
-    with open(file_path, 'w') as f:
+    with open(file_path, "w") as f:
         for url in urls:
-            f.write(url + '\n')
+            f.write(url + "\n")
+
 
 def main():
     # Take user input for domain name
@@ -41,6 +49,7 @@ def main():
     # Save URLs to the output text file
     save_urls_to_file(urls, file_path)
     print("URLs saved to", file_path)
+
 
 if __name__ == "__main__":
     main()
